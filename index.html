@@ -80,11 +80,23 @@
                     <button class="btn btn-primary" id="btn-titlecase" title="Title Case"><i class="fa-solid fa-text-width"></i> Title</button>
                     <button class="btn btn-secondary" id="btn-rem-spaces" title="Remove extra spaces"><i class="fa-solid fa-compress"></i> Trim Spaces</button>
                     <button class="btn btn-secondary" id="btn-rem-lines" title="Remove line breaks"><i class="fa-solid fa-align-justify"></i> Single Line</button>
+                    <button class="btn btn-secondary" id="btn-extract-emails" title="Extract Emails"><i class="fa-solid fa-envelope"></i> Ext. Emails</button>
+                    <button class="btn btn-secondary" id="btn-extract-urls" title="Extract URLs"><i class="fa-solid fa-link"></i> Ext. URLs</button>
                     <button class="btn btn-copy" id="btn-copy"><i class="fa-regular fa-copy"></i> Copy</button>
                     <button class="btn btn-danger" id="btn-clear"><i class="fa-solid fa-trash-can"></i> Clear</button>
                 </div>
             </div>
             
+            <div class="tools-container card" style="padding: 20px; margin-bottom: 20px;">
+                <h3 style="color: var(--accent-color); margin-bottom: 15px; font-size: 1.1rem;">Find & Replace</h3>
+                <div class="find-replace-form" style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+                    <input type="text" id="find-input" placeholder="Find..." style="flex: 1; padding: 10px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-primary); min-width: 150px;">
+                    <input type="text" id="replace-input" placeholder="Replace with..." style="flex: 1; padding: 10px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-primary); min-width: 150px;">
+                    <label style="display: flex; align-items: center; gap: 5px; color: var(--text-secondary); cursor: pointer;"><input type="checkbox" id="use-regex"> Regex</label>
+                    <button class="btn btn-primary" id="btn-replace"><i class="fa-solid fa-retweet"></i> Replace All</button>
+                </div>
+            </div>
+
             <div class="bottom-layout">
 
                 <!-- Reading Time Info -->
@@ -93,7 +105,24 @@
                     <p>Estimated Reading Time: <span id="read-time">0 min</span></p>
                     <p>Estimated Speaking Time: <span id="speak-time">0 min</span></p>
                 </div>
+                <div class="info-card">
+                    <h3>Keyword Density</h3>
+                    <ul id="keyword-density-list" style="list-style: none; color: var(--text-secondary); padding: 0;">
+                        <li>No data yet...</li>
+                    </ul>
+                </div>
             </div>
+
+            <!-- Modal for Extracted Data -->
+            <div id="data-modal" class="modal card" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2000; width: 90%; max-width: 500px; padding: 25px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <h3 id="modal-title" style="color: var(--accent-color); font-size: 1.2rem;">Extracted Data</h3>
+                    <button id="close-modal" style="background: none; border: none; color: var(--text-secondary); font-size: 1.5rem; cursor: pointer;">&times;</button>
+                </div>
+                <textarea id="modal-content" readonly style="width: 100%; height: 200px; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-primary); padding: 10px; margin-bottom: 15px; resize: none;"></textarea>
+                <button class="btn btn-copy" id="btn-copy-modal" style="width: 100%; justify-content: center;"><i class="fa-regular fa-copy"></i> Copy to Clipboard</button>
+            </div>
+            <div id="modal-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 1999;"></div>
 
             <div class="seo-footer card" style="padding: 20px; margin-top: 20px;">
                 <h2>About Text Utils</h2>

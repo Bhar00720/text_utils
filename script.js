@@ -34,6 +34,31 @@ document.addEventListener('DOMContentLoaded', () => {
         // Speaking Time (Avg 130 words per minute)
         const speakTime = Math.ceil(wordCount / 130);
         speakTimeEl.innerText = speakTime === 0 ? '0 min' : `~${speakTime} min`;
+
+        // Keyword Density
+        const keywordDensityListEl = document.getElementById('keyword-density-list');
+        if (words.length === 0) {
+            keywordDensityListEl.innerHTML = '<li>No data yet...</li>';
+        } else {
+            const stopWords = new Set(['the', 'a', 'an', 'is', 'in', 'it', 'and', 'or', 'to', 'of', 'for', 'with', 'on', 'at', 'by', 'this', 'that', 'are', 'was', 'as', 'be', 'from', 'but', 'not']);
+            const wordCounts = {};
+            words.forEach(w => {
+                const cleanWord = w.toLowerCase().replace(/[^a-z0-9]/g, '');
+                if (cleanWord && !stopWords.has(cleanWord)) {
+                    wordCounts[cleanWord] = (wordCounts[cleanWord] || 0) + 1;
+                }
+            });
+            const sortedWords = Object.entries(wordCounts).sort((a, b) => b[1] - a[1]).slice(0, 5);
+            if (sortedWords.length === 0) {
+                keywordDensityListEl.innerHTML = '<li>No keywords found.</li>';
+            } else {
+                keywordDensityListEl.innerHTML = sortedWords.map(([w, c]) => 
+                    `<li style="display: flex; justify-content: space-between; margin-bottom: 5px; border-bottom: 1px solid var(--border-color); padding-bottom: 2px;">
+                        <span>${w}</span> <span style="color: var(--text-primary); font-weight: 600;">${c} (${((c/wordCount)*100).toFixed(1)}%)</span>
+                    </li>`
+                ).join('');
+            }
+        }
     }
 
     textInput.addEventListener('input', updateStats);
@@ -50,7 +75,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     document.getElementById('btn-titlecase').addEventListener('click', () => {
-        textInput.value = textInput.value.toLowerCase().split(' ').map(word => {
+        const smallWords = new Set(['a', 'an', 'and', 'as', 'at', 'but', 'by', 'for', 'if', 'in', 'nor', 'of', 'on', 'or', 'so', 'the', 'to', 'up', 'yet']);
+        textInput.value = textInput.value.toLowerCase().split(' ').map((word, index) => {
+            if (index !== 0 && smallWords.has(word)) {
+                return word;
+            }
             return word.charAt(0).toUpperCase() + word.slice(1);
         }).join(' ');
         updateStats();
@@ -81,6 +110,91 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
             toast.classList.remove('show');
         }, 2000);
+    });
+
+    // Find & Replace
+    document.getElementById('btn-replace').addEventListener('click', () => {
+        const findText = document.getElementById('find-input').value;
+        const replaceText = document.getElementById('replace-input').value;
+        const useRegex = document.getElementById('use-regex').checked;
+        
+        if (!findText) return;
+
+        let flags = 'g';
+        let searchRegex;
+        
+        try {
+            if (useRegex) {
+                searchRegex = new RegExp(findText, flags);
+            } else {
+                // Escape regex characters for literal string match
+                const escapedFindText = findText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                searchRegex = new RegExp(escapedFindText, flags);
+            }
+            textInput.value = textInput.value.replace(searchRegex, replaceText);
+            updateStats();
+        } catch (e) {
+            alert('Invalid Regular Expression');
+        }
+    });
+
+    // Extraction & Modal Logic
+    const modal = document.getElementById('data-modal');
+    const modalOverlay = document.getElementById('modal-overlay');
+    const modalTitle = document.getElementById('modal-title');
+    const modalContent = document.getElementById('modal-content');
+
+    function openModal(title, content) {
+        modalTitle.innerText = title;
+        modalContent.value = content;
+        modal.style.display = 'block';
+        modalOverlay.style.display = 'block';
+    }
+
+    function closeModal() {
+        modal.style.display = 'none';
+        modalOverlay.style.display = 'none';
+    }
+
+    document.getElementById('close-modal').addEventListener('click', closeModal);
+    modalOverlay.addEventListener('click', closeModal);
+
+    document.getElementById('btn-copy-modal').addEventListener('click', () => {
+        if (!modalContent.value) return;
+        modalContent.select();
+        document.execCommand('copy');
+        toast.innerText = 'List copied!';
+        toast.classList.add('show');
+        setTimeout(() => {
+            toast.classList.remove('show');
+            toast.innerText = 'Copied to clipboard!';
+        }, 2000);
+    });
+
+    document.getElementById('btn-extract-emails').addEventListener('click', () => {
+        const text = textInput.value;
+        const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g;
+        const emails = text.match(emailRegex) || [];
+        const uniqueEmails = [...new Set(emails)];
+        
+        if (uniqueEmails.length === 0) {
+            alert('No emails found.');
+        } else {
+            openModal(`Extracted Emails (${uniqueEmails.length})`, uniqueEmails.join('\n'));
+        }
+    });
+
+    document.getElementById('btn-extract-urls').addEventListener('click', () => {
+        const text = textInput.value;
+        const urlRegex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/g;
+        const urls = text.match(urlRegex) || [];
+        const uniqueUrls = [...new Set(urls)];
+        
+        if (uniqueUrls.length === 0) {
+            alert('No URLs found.');
+        } else {
+            openModal(`Extracted URLs (${uniqueUrls.length})`, uniqueUrls.join('\n'));
+        }
     });
 
     // Initialize stats
