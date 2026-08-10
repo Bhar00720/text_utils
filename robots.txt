@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://text-tools.corelumetech.in/sitemap.xml
