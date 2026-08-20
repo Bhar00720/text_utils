@@ -85,6 +85,34 @@ document.addEventListener('DOMContentLoaded', () => {
         updateStats();
     });
 
+    document.getElementById('btn-sort-lines').addEventListener('click', () => {
+        let lines = textInput.value.split('\n');
+        lines.sort();
+        textInput.value = lines.join('\n');
+        updateStats();
+    });
+
+    document.getElementById('btn-reverse-lines').addEventListener('click', () => {
+        let lines = textInput.value.split('\n');
+        lines.reverse();
+        textInput.value = lines.join('\n');
+        updateStats();
+    });
+
+    document.getElementById('btn-remove-duplicates').addEventListener('click', () => {
+        let lines = textInput.value.split('\n');
+        let uniqueLines = [...new Set(lines)];
+        textInput.value = uniqueLines.join('\n');
+        updateStats();
+    });
+
+    document.getElementById('btn-remove-empty-lines').addEventListener('click', () => {
+        let lines = textInput.value.split('\n');
+        let nonEmptyLines = lines.filter(line => line.trim().length > 0);
+        textInput.value = nonEmptyLines.join('\n');
+        updateStats();
+    });
+
     document.getElementById('btn-rem-spaces').addEventListener('click', () => {
         textInput.value = textInput.value.replace(/\s+/g, ' ').trim();
         updateStats();
