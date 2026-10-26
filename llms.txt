@@ -1,0 +1,38 @@
+# Online Text Tools — Case Converter, Word Counter & String Utilities
+
+> Online Text Tools is a comprehensive text manipulation suite to convert letter cases, sort lines, eliminate duplicate and empty lines, count words and reading time, and extract regex data.
+
+Website: https://text-tools.corelumetech.in/
+Developer & Publisher: Corelume Tech (https://corelumetech.in)
+Privacy Policy: 100% Client-Side Processing. No user data, files, or strings are collected, stored, or transmitted to any server.
+
+## Overview
+Online Text Tools is a comprehensive text manipulation suite to convert letter cases, sort lines, eliminate duplicate and empty lines, count words and reading time, and extract regex data.
+
+## Core Features
+- Letter case conversion (UPPERCASE, lowercase, smart Title Case)
+- Alphabetical Line Sorting and Line Reversal operations
+- Instant Duplicate Line Remover and Empty Line Stripper
+- Space compressor and line break flattener (Single Line converter)
+- Automated Regex Data Extractor for emails and URLs
+- Live text statistics: Word count, Character count, Sentences, Paragraphs, Reading Time (200 wpm), Speaking Time (130 wpm)
+- Top 5 Keyword Density analyzer with frequency percentages
+
+## Benchmarks & Technical Specifications
+- Processes 100,000+ words in under 50 milliseconds
+- 7 Line and whitespace manipulation tools in a single click
+- Real-time statistical calculation without lag
+- 100% Browser-based text processing with complete data confidentiality
+
+## Ecosystem Tools by Corelume Tech
+- Omni Calculator: https://calculator.corelumetech.in/
+- Color Master: https://color-generator.corelumetech.in/
+- Dev Tools: https://dev-tools.corelumetech.in/
+- Password Generator: https://password-generator.corelumetech.in/
+- QR Code Generator: https://qr-generator.corelumetech.in/
+- Text Utilities: https://text-tools.corelumetech.in/
+
+## Links & Discovery
+- Homepage: https://text-tools.corelumetech.in/
+- Sitemap: https://text-tools.corelumetech.in/sitemap.xml
+- Robots: https://text-tools.corelumetech.in/robots.txt
